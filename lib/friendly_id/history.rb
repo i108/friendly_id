@@ -111,6 +111,8 @@ method.
     # used slug.
     def scope_for_slug_generator
       relation = super.joins(:slugs)
+      return relation unless friendly_id_config.uses?(:scoped)
+
       unless new_record?
         relation = relation.merge(Slug.where('sluggable_id <> ?', id))
       end
